@@ -2,6 +2,6 @@
 
 <?php foreach ($categoryes as $category): ?>
     <div>
-        <h3><a href=""><?=$category?></a>></h3>
+        <h3><a href="category/<?=$category?>"><?=$category?></a></h3>
     </div>
 <?php endforeach;?>
