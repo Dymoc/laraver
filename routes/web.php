@@ -28,16 +28,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
 //news
 Route::get('/news', [NewsController::class, 'index'])
-    ->name('news/');
+    ->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+')
-    ->name('news.show/');
+    ->name('news.show');
+
+
+
 
 Route::get('/news/category', [NewsController::class, 'category'])
-    ->name('news.category/');
+    ->name('news.category');
 
 Route::get('/news/category/{category}', [NewsController::class, 'categoryOne'])
-    ->name('news.category.one/');
+    ->name('news.category.one');
 
 
 

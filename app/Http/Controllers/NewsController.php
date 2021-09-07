@@ -17,7 +17,7 @@ class NewsController extends Controller
     public function show(int $id)
     {
         $newsList = $this->getNews();
-//        dd($newsList);
+        dd($newsList);
         $news =  $newsList[$id];
 
 

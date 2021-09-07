@@ -14,7 +14,14 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        dump('admin');
+        return view('admin.news.index', [ 'newsList' => $this->getNews()
+        ]);
+    }
+
+    public function category()
+    {
+    //
     }
 
     /**
@@ -46,7 +53,7 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        return 'Это контроллер админский';
+    //
     }
 
     /**

@@ -14,7 +14,45 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        dump('index');
+        $newsList = $this->getNews();
+        $categoryes = [];
+
+
+        foreach ($newsList as $news) {
+            if (!in_array($news['category'], $categoryes)) {
+                array_push($categoryes, $news['category']);
+            }
+        }
+
+        return view('admin.category.index', [
+            'categoryes' => $categoryes
+        ]);
+    }
+
+    public function categoryOne($category)
+    {
+        view('yes');
+    }
+
+    public function one($category)
+    {
+        dd($category);
+
+        $newsList = $this->getNews();
+        $categoryNews = [];
+
+        foreach ($newsList as $news){
+            if($news['category'] == $category){
+                array_push($categoryNews, $news);
+            }
+        }
+
+        dd($categoryNews);
+
+        return view('admin.category.one', [
+            'categoryNews' => $categoryNews
+        ]);
     }
 
     /**
