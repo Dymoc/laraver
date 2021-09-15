@@ -6,7 +6,7 @@
 
         @foreach ($categoryes as $category)
             <div>
-                <h3><a href={{ route('admin.category.one', ['category' => $category]) }}>{{ $category }}</a></h3>
+                <h3><a href={{ route('admin.category.show', ['category' => $category]) }}>{{ $category }}</a></h3>
             </div>
         @endforeach
     </div>

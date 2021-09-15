@@ -20,12 +20,12 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-    <li class="nav-item active">
+    <li class="nav-item @if('path' == 'admin/category') active @endif"">
         <a class="nav-link" href="{{ route('admin.category.index') }}">
             <i class="fas fa-fw fa-list-alt"></i>
             <span>Категории</span></a>
     </li>
-    <li class="nav-item active">
+    <li class="nav-item @if('path' == 'admin/news') active @endif">
         <a class="nav-link" href="{{ route('admin.news.index') }}">
             <i class="fas fa-fw fa-list"></i>
             <span>Новости</span></a>

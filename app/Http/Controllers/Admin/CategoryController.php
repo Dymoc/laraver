@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     public function categoryOne($category)
     {
-        view('yes');
+        dd($category);
     }
 
     public function one($category)
@@ -82,9 +82,25 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($category)
     {
-        //
+
+        dump($category);
+
+        $newsList = $this->getNews();
+        $categoryNews = [];
+
+        foreach ($newsList as $news){
+            if($news['category'] == $category){
+                array_push($categoryNews, $news);
+            }
+        }
+
+        dump($categoryNews);
+
+        return view('admin.category.one', [
+            'categoryNews' => $categoryNews
+        ]);
     }
 
     /**

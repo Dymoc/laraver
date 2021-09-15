@@ -14,8 +14,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        dump('admin');
-        return view('admin.news.index', [ 'newsList' => $this->getNews()
+
+        dump('admin', request()->path() );
+        return view('admin.news.index', [
+            'newsList' => $this->getNews(),
+            'path' => request()->url()
         ]);
     }
 
