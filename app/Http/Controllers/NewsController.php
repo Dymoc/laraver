@@ -3,24 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
 
     public function index()
     {
+        $newsList = DB::table('news')->get();
         return view('news.index', [
-            'newsList' => $this->getNews()
+            'newsList' => $newsList
         ]);
     }
 
     public function show(int $id)
     {
-        $newsList = $this->getNews();
-        dd($newsList);
-        $news =  $newsList[$id];
-
-
+        $news = DB::table('news')->find($id);
         return view('news.show', [
             'id' => $id,
             'news' => $news
@@ -29,33 +27,20 @@ class NewsController extends Controller
 
     public function category()
     {
-        $newsList = $this->getNews();
-        $categoryes = [];
-
-        foreach ($newsList as $news){
-            if(!in_array($news['category'], $categoryes)){
-                array_push($categoryes, $news['category']);
-            }
-        }
-//        dump($categoryes);
+        $categoryes = DB::table('category')->get();
 
         return view('news.category.index', [
             'categoryes' => $categoryes
         ]);
     }
 
-    public function categoryOne($category)
+    public function categoryOne($category_id)
     {
-        $newsList = $this->getNews();
-        $categoryNews = [];
-
-        foreach ($newsList as $news){
-            if($news['category'] == $category){
-                array_push($categoryNews, $news);
-            }
-        }
-
-//        dump($categoryNews);
+        $categoryNews = DB::table('news')
+            ->join('category', 'category.id', '=', 'news.category_id')
+            ->select('news.*', 'category.title as category')
+            ->where('category_id', '=', $category_id)
+            ->get();
 
         return view('news.category.one', [
             'categoryNews' => $categoryNews

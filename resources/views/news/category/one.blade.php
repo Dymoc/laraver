@@ -7,9 +7,9 @@
 
         @foreach ($categoryNews as $news)
             <div>
-                <h3><a href={{ route('news.show', ['id' => $news['id']]) }}>{{ $news['title'] }}</a></h3>
-                <p>{{ $news['description'] }}</p>
-                <p>{{ $news['category'] }}</p>
+                <h3><a href={{ route('news.show', ['id' => $news->id]) }}>{{ $news->title }}</a></h3>
+                <p>{{ $news->description }}</p>
+                <p>{{ $news->category }}</p>
             </div>
         @endforeach
 
