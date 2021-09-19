@@ -8,7 +8,7 @@
 
         <a href={{ route('news') }}>Новости</a>
         <br>
-        <a href={{ route('news.category') }}>Категории новостей</a>
+        <a href={{ route('category') }}>Категории новостей</a>
         <br>
         <a href={{ route('callback') }}>Форма обратной связи</a>
         <br>

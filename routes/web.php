@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
-use App\Http\Controllers\Form;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,57 +16,27 @@ use App\Http\Controllers\Form;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 //admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
-    Route::resource('news', AdminNewsController::class);
-    Route::resource('category', AdminCategoryController::class);
-    Route::resource('category.one', AdminCategoryController::class);
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+   Route::resource('categories', AdminCategoryController::class);
+   Route::resource('news', AdminNewsController::class);
 });
+
+
+
 
 //news
 Route::get('/news', [NewsController::class, 'index'])
-    ->name('news');
+	->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+')
-    ->name('news.show');
+	->where('id', '\d+')
+	->name('news.show');
 
-Route::get('/news/category', [NewsController::class, 'category'])
-    ->name('news.category');
+Route::get('/collections', function() {
+	$collect = collect([1,3,6,7,2,8,9,3,23,68,11,6]);
 
-Route::get('/news/category/{category}', [NewsController::class, 'categoryOne'])
-    ->name('news.category.one');
-
-//form
-Route::get('/callback', [Form::class, 'callback'])
-    ->name('callback');
-Route::post('/callback', [Form::class, 'inFile'])
-    ->name('callback_post');
-
-Route::get('/data', [Form::class, 'data'])
-    ->name('data');
-Route::post('/data', [Form::class, 'dataInfo'])
-    ->name('data_post');
-
-
-
-
-
-
-
-
-
-//test
-Route::get('hy', function () {
-    return view('hello');
-});
-
-Route::get('hello', function () {
-    return 'welcome';
-});
-
-Route::get('info', function () {
-    return phpinfo();
+	dump($collect->shuffle()->map(fn($item) => $item + 2)->toJson());
 });

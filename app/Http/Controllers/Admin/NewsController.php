@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -14,38 +16,54 @@ class NewsController extends Controller
      */
     public function index()
     {
+		$newsList = News::with('category')
+			->paginate(
+				config('news.paginate')
+			);
 
-        dump('admin', request()->path() );
-        return view('admin.news.index', [
-            'newsList' => $this->getNews(),
-            'path' => request()->url()
-        ]);
-    }
-
-    public function category()
-    {
-    //
+		return view('admin.news.index', [
+			'newsList' => $newsList
+		]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+		$categories =  Category::all();
+        return view('admin.news.create', [
+			'categories' => $categories
+		]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+     * @return \Illuminate\Http\RedirectResponse
+	 */
     public function store(Request $request)
     {
-        //
+		$request->validate([
+			'title' => ['required', 'string', 'min:3']
+		]);
+
+        $news = News::create(
+			$request->only(['category_id', 'title', 'author', 'description'])
+		);
+
+		if( $news ) {
+			return redirect()
+				->route('admin.news.index')
+				->with('success', 'Запись успешно добавлена');
+		}
+
+		return back()
+			->with('error', 'Запись не добавлена')
+			->withInput();
     }
 
     /**
@@ -54,9 +72,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(News $news)
     {
-    //
+
     }
 
     /**
@@ -65,9 +83,13 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news)
     {
-        //
+		$categories =  Category::all();
+        return view('admin.news.edit', [
+			'news' => $news,
+			'categories' => $categories
+		]);
     }
 
     /**
@@ -75,11 +97,27 @@ class NewsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+     * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function update(Request $request, News $news)
     {
-        //
+		$request->validate([
+			'title' => ['required', 'string', 'min:3']
+		]);
+
+        $news = $news->fill(
+			$request->only(['category_id', 'title', 'author', 'description'])
+		)->save();
+
+		if( $news ) {
+			return redirect()
+				->route('admin.news.index')
+				->with('success', 'Запись успешно обновлена');
+		}
+
+		return back()
+			->with('error', 'Запись не обновлена')
+			->withInput();
     }
 
     /**
@@ -88,8 +126,17 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
-        //
+        dd($news);
+        News::destroy($news);
+        $newsList = News::with('category')
+            ->paginate(
+                config('news.paginate')
+            );
+
+        return view('admin.news.index', [
+            'newsList' => $newsList
+        ]);
     }
 }
