@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsUpdateRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -74,8 +75,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
 	 */
-    public function update(Request $request, Category $category)
+    public function update(NewsUpdateRequest $request, Category $category)
     {
+        dd($request->validate());
+
         $category = $category->fill(
 			$request->only(['title', 'description'])
 		)->save();

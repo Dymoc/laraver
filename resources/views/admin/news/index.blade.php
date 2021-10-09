@@ -28,14 +28,14 @@
 		 @forelse($newsList as $news)
 		 <tr>
 			 <td>{{ $news->id }}</td>
-			 <td>{{ optional($news->category)->title }}</td>
+			 <td class="col-md-1">{{ optional($news->category)->title }}</td>
 			 <td>{{ $news->title }}</td>
 			 <td>{!! $news->description !!}</td>
 			 <td>{{ $news->created_at }}</td>
 			 <td>
 				  <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}">Ред.</a>
 				  &nbsp;
-				  <a href="{{ route('admin.news.destroy', ['news' => $news]) }}">Уд.</a>
+				  <a href="javascript:;" class="delete" rel="{{ $news->id }}">Уд.</a>
 			 </td>
 		 </tr>
 		 @empty
@@ -50,3 +50,29 @@
 </div>
 </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        $(function (){
+            $('.delete').on('click', function (){
+                var id = $(this).attr('rel');
+                if(confirm('Подтвердите удаление')){
+                    $.ajax({
+                        type: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "/admin/news/" + id,
+                        success: function (response){
+                            alert('Запись удалена');
+                            location.reload();
+                        },
+                        error: function (error){
+                            console.log(error);
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+@endpush

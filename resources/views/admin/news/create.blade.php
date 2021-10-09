@@ -13,6 +13,7 @@
 
             <form method="post" action="{{ route('admin.news.store') }}">
                 @csrf
+                @method('put')
                 <div class="form-group">
                     <label for="category_id">Категория</label>
                     <select class="form-control" name="category_id">
